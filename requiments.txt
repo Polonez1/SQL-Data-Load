@@ -3,3 +3,4 @@ SQLAlchemy
 pyodbc
 mysql-connector-odbc
 mysql-connector-python
+urlib

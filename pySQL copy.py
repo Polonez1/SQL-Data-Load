@@ -9,6 +9,16 @@ import log_config as logc
 logc.log
 
 
+def test_connection(engine):
+    try:
+        with engine.connect() as connection:
+            logging.info(f"{logc.green} Connect succes {logc.reset}")
+            return True
+    except Exception as e:
+        logging.error(f"{logc.red} Connect Error: {e} {logc.reset}")
+        return False
+
+
 class MySQL:
     def __init__(self, host, database, user, password, port="3306"):
         self.host = host
@@ -16,23 +26,19 @@ class MySQL:
         self.user = user
         self.password = password
         self.port = port
-        self.engine = self.create_engine()
-        self.connect = self.test_connection()
+        self.engine = self.create_mysql_engine()
+        self.connect = test_connection(engine=self.engine)
 
-    def create_engine(self):
+    def create_mysql_engine(self):
         engine = create_engine(
             f"mysql+mysqlconnector://{self.user}:{self.password}@{self.host}/{self.database}"
         )
         return engine
 
-    def test_connection(self):
-        try:
-            with self.engine.connect() as connection:
-                logging.info(f"{logc.green} Connect succes {logc.reset}")
-                return True
-        except Exception as e:
-            logging.error(f"{logc.red} Connect Error: {e} {logc.reset}")
-            return False
+
+class SQL(MySQL):
+    def __init__(self, host, database, user, password, port="3306"):
+        super().__init__(host, database, user, password, port)
 
     def get_data(self, table: str, columns: list = None) -> pd.DataFrame:
         """Select table from database by query
@@ -94,7 +100,7 @@ class MySQL:
 
 
 if __name__ == "__main__":
-    sql = MySQL(
+    sql = SQL(
         host="127.0.0.1",
         database="test_schema",
         user="polonez",
