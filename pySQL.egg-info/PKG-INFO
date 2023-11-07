@@ -6,6 +6,4 @@ Author: Darjus Vasiukevic
 Requires-Dist: pandas==1.5.3
 Requires-Dist: SQLAlchemy==2.0.23
 Requires-Dist: pyodbc==5.0.1
-Requires-Dist: mysql-connector-odbc
-Requires-Dist: mysql-connector-python==8.0.30
 Requires-Dist: urllib3==1.26.12
