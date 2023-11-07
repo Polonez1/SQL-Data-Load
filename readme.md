@@ -9,11 +9,3 @@ The project is designed to work with MySQL and MSSQL databases. By integrating t
 # Install requirements
 
 ```pip install -r requirements.txt```
-
-
-
-
-
-
-
-
