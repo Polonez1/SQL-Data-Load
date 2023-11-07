@@ -10,8 +10,6 @@ setup(
         "pandas==1.5.3",
         "SQLAlchemy==2.0.23",
         "pyodbc==5.0.1",
-        "mysql-connector-odbc",
-        "mysql-connector-python==8.0.30",
         "urllib3==1.26.12",
     ],
 )
