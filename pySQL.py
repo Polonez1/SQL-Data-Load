@@ -147,3 +147,4 @@ if __name__ == "__main__":
     )
 
     df = sql.read_query(table="dbo.test_table")
+    print(df)
