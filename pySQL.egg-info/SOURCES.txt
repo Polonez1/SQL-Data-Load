@@ -1,0 +1,6 @@
+setup.py
+pySQL.egg-info/PKG-INFO
+pySQL.egg-info/SOURCES.txt
+pySQL.egg-info/dependency_links.txt
+pySQL.egg-info/requires.txt
+pySQL.egg-info/top_level.txt

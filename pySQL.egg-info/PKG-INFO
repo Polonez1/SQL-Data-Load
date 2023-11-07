@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Name: pySQL
+Version: 1.0.0
+Summary: The project is designed to work with MySQL and MSSQL databases. By integrating this project into other python projects, it is possible to select boards, load them and initiate sql queries using the SQL language.
+Author: Darjus Vasiukevic
+Requires-Dist: pandas==1.5.3
+Requires-Dist: SQLAlchemy==2.0.23
+Requires-Dist: pyodbc==5.0.1
+Requires-Dist: mysql-connector-odbc
+Requires-Dist: mysql-connector-python==8.0.30
+Requires-Dist: urllib3==1.26.12
