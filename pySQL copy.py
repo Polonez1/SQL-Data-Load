@@ -1,8 +1,10 @@
 import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy import text
-import mysql.connector
+
+# import mysql.connector
 import logging
+import urllib.parse
 
 import log_config as logc
 
@@ -36,9 +38,45 @@ class MySQL:
         return engine
 
 
-class SQL(MySQL):
-    def __init__(self, host, database, user, password, port="3306"):
-        super().__init__(host, database, user, password, port)
+class MsSQL:
+    def __init__(self, host, database, driver="{ODBC Driver 17 for SQL Server}"):
+        self.host = host
+        self.database = database
+        self.driver = driver
+        self.engine = self.create_mssql_engine()
+        self.connect = test_connection(engine=self.engine)
+
+    def create_mssql_engine(self):
+        connection_string = (
+            f"Driver={self.driver};"
+            f"Server={self.host};"
+            f"Database={self.database};"
+            "Trusted_Connection=yes;"
+        )
+        engine = create_engine(
+            f"mssql+pyodbc:///?odbc_connect={urllib.parse.quote_plus(connection_string)}"
+        )
+
+        return engine
+
+
+class SQL:
+    def __init__(
+        self,
+        host: str,
+        database: str,
+        user: str,
+        password: str,
+        connect_type: str,
+        port: str = "3306",
+        driver: str = "{ODBC Driver 17 for SQL Server}",
+    ):
+        if connect_type == "MySQL":
+            mysql_object = MySQL(host, database, user, password, port)
+            self.engine = mysql_object.engine
+        if connect_type == "MsSQL":
+            mssql_object = MsSQL(host, database, driver)
+            self.engine = mssql_object.engine
 
     def get_data(self, table: str, columns: list = None) -> pd.DataFrame:
         """Select table from database by query
@@ -101,23 +139,29 @@ class SQL(MySQL):
 
 if __name__ == "__main__":
     sql = SQL(
-        host="127.0.0.1",
-        database="test_schema",
+        host="localhost",
+        database="testDB",
         user="polonez",
         password="polonez",
+        connect_type="MsSQL",
     )
+
+    df = sql.get_data(table="dbo.test_table")
+    print(df)
 
     # df = sql.get_data(table="test_table", columns=("id", "name"))
     # print(df)
 
     # df = sql.read_query(query="SELECT * FROM test_table")
     # df = pd.DataFrame(df)
-    df = pd.DataFrame(
-        {
-            "id": [1, 2],
-            "created_at": ["2022-10-10", "2022-10-11"],
-            "name": ["mms", "trh"],
-        }
-    )
-
-    sql.load_data_to_SQL(df=df, table="test_table", truncate=True)
+    # df = pd.DataFrame(
+    #    {
+    #        "id": [1, 2],
+    #        "created_at": ["2022-10-10", "2022-10-11"],
+    #        "name": ["mms", "trh"],
+    #    }
+    # )
+    #
+    # sql.load_data_to_SQL(df=df, table="test_table", truncate=True)
+    # df = sql.read_query(query="SELECT * FROM test_table")
+    # print(pd.DataFrame(df))
