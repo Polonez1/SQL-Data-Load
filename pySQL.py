@@ -15,7 +15,7 @@ logc.log
 def test_connection(engine):
     try:
         with engine.connect() as connection:
-            logging.info(f"{logc.green} Connect succes {logc.reset}")
+            logging.info(f"{logc.green} connected successfully {logc.reset}")
             return True
     except Exception as e:
         logging.error(f"{logc.red} Connect Error: {e} {logc.reset}")
@@ -119,7 +119,7 @@ class SQL:
             query_obj = text(query)
             output = connection.execute(query_obj)
             logging.info(
-                f"  Query: [{logc.bold}{query[:26]}...{logc.reset}] {logc.green} SUCCES {logc.reset}"
+                f"  Query: [{logc.bold}{query[:26]}...{logc.reset}] {logc.green} query read successfully {logc.reset}"
             )
             if output:
                 return output
@@ -135,7 +135,7 @@ class SQL:
         if truncate:
             self.read_query(query=f"TRUNCATE TABLE {self.database}.{table};")
             logging.info(
-                f"  Table: [{logc.bold}{table}{logc.reset}] {logc.green} TRUNCATE SUCCES {logc.reset}"
+                f"  Table: [{logc.bold}{table}{logc.reset}] {logc.green} TRUNCATE successfully {logc.reset}"
             )
         else:
             pass
@@ -146,7 +146,7 @@ class SQL:
                 table, self.engine, if_exists="append", index=False, method="multi"
             )
         logging.info(
-            f"  LOAD table: [{logc.bold}{table}{logc.reset}] {logc.green} SUCCES {logc.reset}"
+            f"  LOAD table: [{logc.bold}{table}{logc.reset}] {logc.green} loaded successfully {logc.reset}"
         )
 
 
