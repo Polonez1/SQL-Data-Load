@@ -1,6 +1,7 @@
 import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy import text
+from datetime import datetime
 
 # import mysql.connector
 import logging
@@ -63,19 +64,20 @@ class MsSQL:
 class SQL:
     def __init__(
         self,
-        host: str,
-        database: str,
-        user: str,
-        password: str,
+        # host: str,
+        # database: str,
+        # user: str,
+        # password: str,
         connect_type: str,
         port: str = "3306",
         driver: str = "{ODBC Driver 17 for SQL Server}",
+        **kwargs,
     ):
         if connect_type == "MySQL":
-            mysql_object = MySQL(host, database, user, password, port)
+            mysql_object = MySQL(**kwargs)
             self.engine = mysql_object.engine
         if connect_type == "MsSQL":
-            mssql_object = MsSQL(host, database, driver)
+            mssql_object = MsSQL(**kwargs)
             self.engine = mssql_object.engine
 
     def get_data(self, table: str, columns: list = None) -> pd.DataFrame:
@@ -116,8 +118,8 @@ class SQL:
         df: pd.DataFrame,
         table: str,
         truncate=False,
-        batch_size=1000,
-        max_overflow=100,
+        batch_size: int = 1000,
+        max_overflow: int = 100,
     ):
         if truncate:
             self.read_query(query=f"TRUNCATE TABLE {self.database}.{table};")
@@ -141,10 +143,7 @@ if __name__ == "__main__":
     sql = SQL(
         host="localhost",
         database="testDB",
-        user="polonez",
-        password="polonez",
+        # user="polonez",
+        # password="polonez",
         connect_type="MsSQL",
     )
-
-    df = sql.get_data(table="dbo.test_table")
-    print(df)
