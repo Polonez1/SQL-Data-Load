@@ -145,3 +145,6 @@ if __name__ == "__main__":
         password="polonez",
         connect_type="MsSQL",
     )
+
+    df = sql.get_data(table="dbo.test_table")
+    print(df)
