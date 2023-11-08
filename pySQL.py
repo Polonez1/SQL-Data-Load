@@ -80,12 +80,17 @@ class SQL:
             mssql_object = MsSQL(**kwargs)
             self.engine = mssql_object.engine
 
-    def get_data(self, table: str, columns: list = None) -> pd.DataFrame:
+    def get_data(
+        self, table: str = None, columns: list = None, query: str = None
+    ) -> pd.DataFrame:
         """Select table from database by query
         Args:
             table: table in SQL database which one you want to choose
+                            By default: None
             columns: columns which one you want select
                             By default: * (all)
+            query: select table from query (select * from table;)
+                            By default: None
         Returns:
             pd.DataFrame: table
         """
@@ -94,9 +99,12 @@ class SQL:
         else:
             columns_str = "*"
 
-        query = f"SELECT {columns_str} from {table}"
+        query_by_table = f"SELECT {columns_str} from {table}"
         conn = self.engine.connect()
-        df = pd.read_sql(text(query), conn)
+        if table is not None:
+            df = pd.read_sql(text(query_by_table), conn)
+        elif query is not None:
+            df = pd.read_sql(text(query), conn)
         return df
 
     def read_query(self, query: str) -> object:
@@ -110,6 +118,9 @@ class SQL:
         with self.engine.begin() as connection:
             query_obj = text(query)
             output = connection.execute(query_obj)
+            logging.info(
+                f"  Query: [{logc.bold}{query[:26]}...{logc.reset}] {logc.green} SUCCES {logc.reset}"
+            )
             if output:
                 return output
 
@@ -147,3 +158,14 @@ if __name__ == "__main__":
         # password="polonez",
         connect_type="MsSQL",
     )
+
+    sql.read_query(query="TRUNCATE TABLE dbo.test_table")
+    df = pd.DataFrame(
+        {
+            "id": [1, 2, 3],
+            "created_at": ["2023-10-10", None, None],
+            "name": ["aws", "acc", "atg"],
+        }
+    )
+
+    sql.load_data_to_SQL(df=df, table="dbo.test_table")

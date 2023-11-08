@@ -1,5 +1,7 @@
 # About Project
 
+![Alt text](image.png)
+
 The project is designed to work with MySQL and MSSQL databases. By integrating this project into other python projects, it is possible to select tables, load them to SQL DB and initiate sql queries using the SQL language.
 
 Project does:
@@ -40,6 +42,8 @@ sql = sqlconn.SQL(
 
 # get data
 df = sql.get_data(table="test_table", columns=["id", "name"])
+or
+df = sql.get_data(query = "select id, name from TestDB.dbo.test_table ")
 
 # read sql query
 sql.read_query(query="DROP TABLE dbo.test_fact")
