@@ -73,6 +73,17 @@ class SQL:
         driver: str = "{ODBC Driver 17 for SQL Server}",
         **kwargs,
     ):
+        """Initialize class objects
+        Args:
+            connect_type (str): MySQL || MsSQL
+            port (str, optional): port. Defaults to "3306".
+            driver (str, optional): driver, if you connect to MsSQL. Defaults to "{ODBC Driver 17 for SQL Server}".
+        Kwargs:
+            host (str): server name or ip
+            database (str): database
+            user (str, optional): user name (only MySQL, MsSQL use a Windows auth)
+            password (str, optional): password (only MySQL, MsSQL use a Windows auth)
+        """
         if connect_type == "MySQL":
             mysql_object = MySQL(**kwargs)
             self.engine = mysql_object.engine
@@ -84,6 +95,7 @@ class SQL:
         self, table: str = None, columns: list = None, query: str = None
     ) -> pd.DataFrame:
         """Select table from database by query
+
         Args:
             table: table in SQL database which one you want to choose
                             By default: None
