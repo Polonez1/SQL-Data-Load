@@ -29,10 +29,10 @@ class MySQL:
         self.user = user
         self.password = password
         self.port = port
-        self.engine = self.create_mysql_engine()
+        self.engine = self.__create_mysql_engine()
         self.connect = test_connection(engine=self.engine)
 
-    def create_mysql_engine(self):
+    def __create_mysql_engine(self):
         engine = create_engine(
             f"mysql+mysqlconnector://{self.user}:{self.password}@{self.host}/{self.database}"
         )
@@ -44,10 +44,10 @@ class MsSQL:
         self.host = host
         self.database = database
         self.driver = driver
-        self.engine = self.create_mssql_engine()
+        self.engine = self.__create_mssql_engine()
         self.connect = test_connection(engine=self.engine)
 
-    def create_mssql_engine(self):
+    def __create_mssql_engine(self):
         connection_string = (
             f"Driver={self.driver};"
             f"Server={self.host};"
