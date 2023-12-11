@@ -1,7 +1,6 @@
 import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy import text
-from datetime import datetime
 
 # import mysql.connector
 import logging
@@ -171,13 +170,13 @@ if __name__ == "__main__":
         connect_type="MsSQL",
     )
 
-    sql.read_query(query="TRUNCATE TABLE dbo.test_table")
-    df = pd.DataFrame(
-        {
-            "id": [1, 2, 3],
-            "created_at": ["2023-10-10", None, None],
-            "name": ["aws", "acc", "atg"],
-        }
-    )
-
-    sql.load_data_to_SQL(df=df, table="dbo.test_table")
+    # sql.read_query(query="TRUNCATE TABLE dbo.test_table")
+    # df = pd.DataFrame(
+    #    {
+    #        "id": [1, 2, 3],
+    #        "created_at": ["2023-10-10", None, None],
+    #        "name": ["aws", "acc", "atg"],
+    #    }
+    # )
+#
+# sql.load_data_to_SQL(df=df, table="dbo.test_table")
