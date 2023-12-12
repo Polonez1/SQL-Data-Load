@@ -24,12 +24,17 @@ def test_connection(engine):
 
 
 class SSHtunnel:
-    # sshtunnel.SSH_TIMEOUT = 5.0
-    # sshtunnel.TUNNEL_TIMEOUT = 5.0
+    sshtunnel.SSH_TIMEOUT = 5.0
+    sshtunnel.TUNNEL_TIMEOUT = 5.0
 
     def __init__(
-        self, ssh_username: str, ssh_password: str, remote_bind_address: tuple
+        self,
+        ssh_host: str,
+        ssh_username: str,
+        ssh_password: str,
+        remote_bind_address: tuple,
     ):
+        self.ssh_host = ssh_host
         self.ssh_user = ssh_username
         self.ssh_password = ssh_password
         self.remote_bind_address = remote_bind_address
@@ -37,10 +42,10 @@ class SSHtunnel:
     def create_tunnel(self):
         "after create use tunnel.start() and tunnel.close()"
         tunnel = sshtunnel.SSHTunnelForwarder(
-            ("ssh.pythonanywhere.com"),
-            ssh_username="Polonez",
-            ssh_password="Lacosanostra1#",
-            remote_bind_address=("Polonez.mysql.pythonanywhere-services.com", 3306),
+            (self.ssh_host),
+            ssh_username=self.ssh_user,
+            ssh_password=self.ssh_password,
+            remote_bind_address=self.remote_bind_address,
         )
         return tunnel
 
@@ -187,23 +192,24 @@ class SQL:
 
 
 if __name__ == "__main__":
-    ssh = SSHtunnel(
-        ssh_username="Polonez",
-        ssh_password="Lacosanostra1#",
-        remote_bind_address=("Polonez.mysql.pythonanywhere-services.com", 3306),
-    )
-    tunnel = ssh.create_tunnel()
-    tunnel.start()
-
-    mysql = SQL(
-        host="127.0.0.1",
-        database="Polonez$default",
-        user="Polonez",
-        password="lacosanostra",
-        port=tunnel.local_bind_port,
-        connect_type="MySQL",
-    )
-
-    df = mysql.get_data(table="test")
-    print(df)
-    tunnel.close()
+    pass
+    # ssh = SSHtunnel(
+    #    ssh_username="Polonez",
+    #    ssh_password="Lacosanostra1#",
+    #    remote_bind_address=("Polonez.mysql.pythonanywhere-services.com", 3306),
+    # )
+    # tunnel = ssh.create_tunnel()
+    # tunnel.start()
+#
+# mysql = SQL(
+#    host="127.0.0.1",
+#    database="Polonez$default",
+#    user="Polonez",
+#    password="lacosanostra",
+#    port=tunnel.local_bind_port,
+#    connect_type="MySQL",
+# )
+#
+# df = mysql.get_data(table="test")
+# print(df)
+# tunnel.close()
