@@ -54,6 +54,28 @@ sql.load_data_to_SQL(df=df, table='dbo.test', truncate=False, batch_size=1000)
 
 ```
 
+## create ssh tunnel
+
+```ssh = SSHtunnel(
+       ssh_host={ssh_host},
+       ssh_username={ssh_username},
+       ssh_password=ssh_password,
+       remote_bind_address=("sshusername.mysql.pythonanywhere-services.com", 3306), #for example
+    )
+    tunnel = ssh.create_tunnel()
+    tunnel.start()
+    
+    mysql = SQL(
+       host={host},
+       database={database},
+       user={databaseuser},
+       password={database_password},
+       port=tunnel.local_bind_port,
+       connect_type="MySQL",
+    )
+    tunnel.close()
+    ```
+
 # Version
 
 - 1.0.0 Beta version
