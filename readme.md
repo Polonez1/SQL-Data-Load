@@ -56,7 +56,8 @@ sql.load_data_to_SQL(df=df, table='dbo.test', truncate=False, batch_size=1000)
 
 ## create ssh tunnel
 
-```ssh = SSHtunnel(
+```
+ssh = SSHtunnel(
        ssh_host={ssh_host},
        ssh_username={ssh_username},
        ssh_password=ssh_password,
