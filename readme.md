@@ -75,7 +75,7 @@ ssh = SSHtunnel(
        connect_type="MySQL",
     )
     tunnel.close()
-    ```
+```
 
 # Version
 
