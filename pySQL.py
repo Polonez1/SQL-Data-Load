@@ -33,7 +33,7 @@ class MySQL:
 
     def __create_mysql_engine(self):
         engine = create_engine(
-            f"mysql+mysqlconnector://{self.user}:{self.password}@{self.host}/{self.database}"
+            f"mysql+mysqlconnector://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}"
         )
         return engine
 
