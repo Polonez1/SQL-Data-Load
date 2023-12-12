@@ -2,6 +2,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy import text
 import sshtunnel
+import MySQLdb
 
 # import mysql.connector
 import logging
@@ -56,7 +57,7 @@ class MySQL:
 
     def __create_mysql_engine(self):
         engine = create_engine(
-            f"mysql+mysqlconnector://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}"
+            f"mysql+mysqldb://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}"
         )
         return engine
 
@@ -194,7 +195,6 @@ if __name__ == "__main__":
     tunnel = ssh.create_tunnel()
     tunnel.start()
 
-    print(0)
     mysql = SQL(
         host="127.0.0.1",
         database="Polonez$default",
@@ -203,12 +203,7 @@ if __name__ == "__main__":
         port=tunnel.local_bind_port,
         connect_type="MySQL",
     )
-    conn = mysql.engine.connect()
-    print(1)
-    result = conn.execute(text("SELECT 1"))
-    for row in result:
-        print(row)
-    # df = mysql.get_data(table="test")
-    # print(df)
 
+    df = mysql.get_data(table="test")
+    print(df)
     tunnel.close()
