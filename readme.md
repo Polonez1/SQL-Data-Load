@@ -5,6 +5,7 @@
 The project is designed to work with MySQL and MSSQL databases. By integrating this project into other python projects, it is possible to select tables, load them to SQL DB and initiate sql queries using the SQL language.
 
 Project does:
+- create SSH tunnel to MySQL
 - easily transitions from MySQL to MsSQL 
 - Select data from SQL by tables and columns (You don't have to write the entire query, just provide the name of the table and column)
 - initializes and reads the SQL queries 
