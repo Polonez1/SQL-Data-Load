@@ -1,6 +1,7 @@
 import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy import text
+import sshtunnel
 
 # import mysql.connector
 import logging
@@ -21,8 +22,30 @@ def test_connection(engine):
         return False
 
 
+class SSHtunnel:
+    # sshtunnel.SSH_TIMEOUT = 5.0
+    # sshtunnel.TUNNEL_TIMEOUT = 5.0
+
+    def __init__(
+        self, ssh_username: str, ssh_password: str, remote_bind_address: tuple
+    ):
+        self.ssh_user = ssh_username
+        self.ssh_password = ssh_password
+        self.remote_bind_address = remote_bind_address
+
+    def create_tunnel(self):
+        "after create use tunnel.start() and tunnel.close()"
+        tunnel = sshtunnel.SSHTunnelForwarder(
+            ("ssh.pythonanywhere.com"),
+            ssh_username="Polonez",
+            ssh_password="Lacosanostra1#",
+            remote_bind_address=("Polonez.mysql.pythonanywhere-services.com", 3306),
+        )
+        return tunnel
+
+
 class MySQL:
-    def __init__(self, host, database, user, password, port="3306"):
+    def __init__(self, host, database, user, password, port):
         self.host = host
         self.database = database
         self.user = user
@@ -68,7 +91,6 @@ class SQL:
         # user: str,
         # password: str,
         connect_type: str,
-        port: str = "3306",
         driver: str = "{ODBC Driver 17 for SQL Server}",
         **kwargs,
     ):
@@ -116,6 +138,8 @@ class SQL:
             df = pd.read_sql(text(query_by_table), conn)
         elif query is not None:
             df = pd.read_sql(text(query), conn)
+
+        conn.close()
         return df
 
     def read_query(self, query: str) -> object:
@@ -162,21 +186,29 @@ class SQL:
 
 
 if __name__ == "__main__":
-    sql = SQL(
-        host="localhost",
-        database="testDB",
-        # user="polonez",
-        # password="polonez",
-        connect_type="MsSQL",
+    ssh = SSHtunnel(
+        ssh_username="Polonez",
+        ssh_password="Lacosanostra1#",
+        remote_bind_address=("Polonez.mysql.pythonanywhere-services.com", 3306),
     )
+    tunnel = ssh.create_tunnel()
+    tunnel.start()
 
-    # sql.read_query(query="TRUNCATE TABLE dbo.test_table")
-    # df = pd.DataFrame(
-    #    {
-    #        "id": [1, 2, 3],
-    #        "created_at": ["2023-10-10", None, None],
-    #        "name": ["aws", "acc", "atg"],
-    #    }
-    # )
-#
-# sql.load_data_to_SQL(df=df, table="dbo.test_table")
+    print(0)
+    mysql = SQL(
+        host="127.0.0.1",
+        database="Polonez$default",
+        user="Polonez",
+        password="lacosanostra",
+        port=tunnel.local_bind_port,
+        connect_type="MySQL",
+    )
+    conn = mysql.engine.connect()
+    print(1)
+    result = conn.execute(text("SELECT 1"))
+    for row in result:
+        print(row)
+    # df = mysql.get_data(table="test")
+    # print(df)
+
+    tunnel.close()
