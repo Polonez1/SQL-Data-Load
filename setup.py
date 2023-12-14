@@ -12,6 +12,7 @@ setup(
         "pyodbc==5.0.1",
         "urllib3==1.26.12",
         "sshtunnel",
+        "mysqlclient",
         "MySQL-python",
         "mysql-connector-python"
     ],
