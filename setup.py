@@ -11,5 +11,8 @@ setup(
         "SQLAlchemy==2.0.23",
         "pyodbc==5.0.1",
         "urllib3==1.26.12",
+        "sshtunnel",
+        "MySQL-python",
+        "mysql-connector-python"
     ],
 )
