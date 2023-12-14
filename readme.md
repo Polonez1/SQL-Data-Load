@@ -79,4 +79,4 @@ ssh = SSHtunnel(
 
 # Version
 
-- 1.0.0 Beta version
+- 1.1.0 Beta version
