@@ -1,4 +1,5 @@
 sshtunnel
+mysqlclient
 MySQL-python
 mysql-connector-python
 urllib3==1.26.12
