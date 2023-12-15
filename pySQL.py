@@ -189,6 +189,12 @@ class SQL:
         logging.info(
             f"  LOAD table: [{logc.bold}{table}{logc.reset}] {logc.green} loaded successfully {logc.reset}"
         )
+        
+    def get_data_from_query(self, query: str)->pd.DataFrame:
+        with self.engine.connect() as conn:
+            query_obj = text(query)
+            df = pd.read_sql_query(query_obj, conn)
+        return df
 
 
 if __name__ == "__main__":
