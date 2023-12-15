@@ -190,10 +190,11 @@ class SQL:
             f"  LOAD table: [{logc.bold}{table}{logc.reset}] {logc.green} loaded successfully {logc.reset}"
         )
         
-    def get_data_from_query(self, query: str)->pd.DataFrame:
+    def get_data_from_query(self, query: str, params: dict = None)->pd.DataFrame:
+        query = query.replace("{ ", "{").replace(" }", "}")
         with self.engine.connect() as conn:
-            query_obj = text(query)
-            df = pd.read_sql_query(query_obj, conn)
+            query_obj = text(query.format(**params))
+            df = pd.read_sql_query(query_obj, conn, params=params)
         return df
 
 
