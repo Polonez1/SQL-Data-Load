@@ -8,6 +8,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "pandas==1.5.3",
+        "sqlalchemy",
         "SQLAlchemy==2.0.23",
         "pyodbc==5.0.1",
         "urllib3==1.26.12",
