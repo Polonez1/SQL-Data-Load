@@ -14,7 +14,6 @@ setup(
         "urllib3==1.26.12",
         "sshtunnel",
         "mysqlclient",
-        "MySQL-python",
         "mysql-connector-python"
     ],
 )
